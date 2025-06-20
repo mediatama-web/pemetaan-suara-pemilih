@@ -65,7 +65,7 @@ export function DataTable<TData, TValue>({
         <div className="flex justify-between gap-3 items-center py-4">
             <Link href="#" className="flex items-center gap-3 p-2 bg-gray-800 text-white rounded-lg md:text-md text-xs md:w-32 text-center"><Plus /><span className="hidden md:block">Tambah</span></Link>
             {/*  */}
-            <Input placeholder="Cari..." value={(table.getColumn("email")?.getFilterValue() as string) ?? ""} onChange={(event) => table.getColumn("email")?.setFilterValue(event.target.value)} className="max-w-xs"/>
+            <Input placeholder="Cari..." value={(table.getColumn("nama_kecamatan")?.getFilterValue() as string) ?? ""} onChange={(event) => table.getColumn("nama_kecamatan")?.setFilterValue(event.target.value)} className="max-w-xs"/>
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button variant="outline" className="ml-auto">

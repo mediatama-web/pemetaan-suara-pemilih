@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\{
     AuthController,
+    DataPemilihController,
     KecamatanController,
     KelurahanController,
     UserController,
@@ -25,5 +26,8 @@ Route::get('kelurahan', [KelurahanController::class, 'index'])->name('kelurahan.
 
 // team
 Route::get('team', [UserController::class, 'index'])->name('team.index')->middleware('auth');
+
+// data pemilih
+Route::get('datapemilih', [DataPemilihController::class, 'index'])->name('datapemilih.index')->middleware('auth');
 
 require __DIR__ . '/auth.php';

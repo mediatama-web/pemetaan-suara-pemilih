@@ -44,7 +44,7 @@ const data = {
     },
     {
       title: "Data Pemilih",
-      url: "#",
+      url: "/datapemilih",
       icon: IdCard,
       role: ["superadmin", "korlap", "kormas"],
     },
