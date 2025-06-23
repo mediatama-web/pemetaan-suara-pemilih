@@ -22,7 +22,10 @@ export function LoginForm({
     e.preventDefault();
 
     post(route('auth.login'), {
-        onFinish: () => reset('password'),
+        onFinish: () => {
+          reset('email'),
+          reset('password')
+        },
     })
   }
 

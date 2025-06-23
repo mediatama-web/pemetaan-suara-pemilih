@@ -48,7 +48,6 @@ export interface Datapemilih {
     kormas_id: number;
     nama_korlap: string;
     korlap_id: number;
-
     tps: string;
     no_hp: number;
     created_at: string;

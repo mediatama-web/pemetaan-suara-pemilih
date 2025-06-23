@@ -1,6 +1,7 @@
 import { Button } from "@/Components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/Components/ui/dropdown-menu"
 import { Kecamatan } from "@/types"
+import { router } from "@inertiajs/react"
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, MoreVerticalIcon } from "lucide-react"
 import Swal from 'sweetalert2'
@@ -67,7 +68,9 @@ export const hapusData = (id : number) => {
     reverseButtons: true
   }).then((result) => {
     if (result.isConfirmed) {
-        console.log("berhasil");
+        router.delete(route('kecamatan.destroy', id), {
+            preserveScroll: true,
+        });
     }
   });
 }
@@ -91,7 +94,9 @@ const EditData = (id : number) => {
         reverseButtons: true
     }).then((result) => {
         if (result.isConfirmed) {
-            console.log("berhasil");
+            router.get(route('kecamatan.edit', id), {
+                preserveScroll: true,
+            });
         }
     })
 }

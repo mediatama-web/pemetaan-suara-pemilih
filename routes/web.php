@@ -10,24 +10,27 @@ use App\Http\Controllers\{
     UserController,
 };
 
-Route::get('/', [AuthController::class, 'index'])->name('/')->middleware('guest');
-Route::post('/auth.login', [AuthController::class, 'login'])->name('auth.login')->middleware('guest');
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+Route::group(['middleware' => 'guest'], function () {
+    Route::get('/', [AuthController::class, 'index'])->name('login');
+    Route::post('/auth.login', [AuthController::class, 'login'])->name('auth.login');
+});
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard/Index');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::group(['middleware' => ['auth', 'verified']], function () {
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard/Index');
+    })->middleware(['auth', 'verified'])->name('dashboard');
 
-// kecamatan
-Route::get('kecamatan', [KecamatanController::class, 'index'])->name('kecamatan.index')->middleware('auth');
+    // kecamatan
+    Route::resource('kecamatan', KecamatanController::class);
 
-// kelurahan
-Route::get('kelurahan', [KelurahanController::class, 'index'])->name('kelurahan.index')->middleware('auth');
+    // kelurahan
+    Route::resource('kelurahan', KelurahanController::class);
 
-// team
-Route::get('team', [UserController::class, 'index'])->name('team.index')->middleware('auth');
+    // team
+    Route::resource('team', UserController::class);
 
-// data pemilih
-Route::get('datapemilih', [DataPemilihController::class, 'index'])->name('datapemilih.index')->middleware('auth');
+    // data pemilih
+    Route::resource('datapemilih', DataPemilihController::class);
 
-require __DIR__ . '/auth.php';
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+});

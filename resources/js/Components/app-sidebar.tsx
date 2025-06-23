@@ -60,6 +60,18 @@ const data = {
       icon: UsersIcon,
       role: ["superadmin"],
     },
+    {
+      title: "Korlap",
+      url: "#",
+      icon: UsersIcon,
+      role: ["superadmin"],
+    },
+    {
+      title: "Kormas",
+      url: "#",
+      icon: UsersIcon,
+      role: ["superadmin"],
+    },
   ],
   // navClouds: [
   //   {

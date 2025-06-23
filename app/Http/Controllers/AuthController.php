@@ -19,11 +19,12 @@ class AuthController extends Controller
     public function login(Request $r)
     {
         $cek = Validator::make($r->all(), [
-            'email' => 'required|email',
-            'password' => 'required:min:8'
+            'email' => 'required|email|exists:users,email',
+            'password' => 'required|min:8'
         ], [
             'email.required' => '* Email diperlukan',
             'email.email' => '* Email tidak valid',
+            'email.exists' => '* Email tidak terdaftar',
             'password.required' => '* Password diperlukan',
             'password.min' => '* Password minimal 8 karakter'
         ]);
@@ -43,13 +44,13 @@ class AuthController extends Controller
 
             switch ($userAuth->role) {
                 case 'superadmin':
-                    return redirect()->route('/')->with('success', 'Selamat Datang ' . $userAuth->name);
+                    return redirect('dashboard')->with('success', 'Selamat Datang ' . $userAuth->name);
                     break;
                 case 'korlap':
-                    return redirect()->route('/')->with('success', 'Selamat Datang ' . $userAuth->name);
+                    return redirect('dashboard')->with('success', 'Selamat Datang ' . $userAuth->name);
                     break;
                 case 'kormas':
-                    return redirect()->route('/')->with('success', 'Selamat Datang ' . $userAuth->name);
+                    return redirect('dashboard')->with('success', 'Selamat Datang ' . $userAuth->name);
                     break;
                 default:
                     return back()->withErrors("Maaf Anda Belum Terdaftar!");
