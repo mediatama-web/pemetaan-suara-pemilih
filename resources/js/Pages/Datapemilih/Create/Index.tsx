@@ -1,7 +1,9 @@
 import InputError from "@/Components/InputError";
 import { Button } from "@/Components/ui/button";
+import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/Components/ui/drawer";
 import { Input } from "@/Components/ui/input";
 import { Separator } from "@/Components/ui/separator";
+import UploadFile from "@/Components/UploadFile";
 import Template from "@/Layouts/Template";
 import { Link, useForm } from "@inertiajs/react";
 import { ArrowLeft, Plus } from "lucide-react";
@@ -92,19 +94,19 @@ export default function Create({kecamatans, kelurahans, korlaps, kormas} : {
                     <ArrowLeft className="w-4 h-4"/>
                 </Link>
                 <form onSubmit={handlerSimpan} className="bg-white p-6 rounded-lg shadow-md">
-                    <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
-                        <div className="mb-4">
+                    <div className="grid md:grid-cols-2 grid-cols-1 md:gap-4">
+                        <div className="md:mb-4 mb-2">
                             <label htmlFor="no_kk" className="block text-sm font-medium text-gray-700">No Kartu Keluarga</label>
                             <Input type="text" onChange={(e) => setData('no_kk', e.target.value)} placeholder="Masukan Nomor Kartu Keluarga" name="no_kk" className={`${errors.no_kk ? 'border-red-600' : ''} mt-1 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50`} />
                             <InputError message={errors.no_kk} className="mt-2 text-red-600" />
                         </div>
-                        <div className="mb-4">
+                        <div className="md:mb-4 mb-2">
                             <label htmlFor="alamat" className="block text-sm font-medium text-gray-700">Alamat</label>
                             <Input type="text" onChange={(e) => setData('alamat', e.target.value)} placeholder="Alamat" name="alamat" className={`mt-1 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50`} />
                         </div>
                     </div>
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="mb-4">
+                    <div className="grid grid-cols-2 md:gap-4">
+                        <div className="md:mb-4 mb-2">
                             <label htmlFor="nik" className="block text-sm font-medium text-gray-700">Nama Kecamatan</label>
                             <select onChange={(e) => handlerFilterKelurahan(e.target.value)} aria-label="Pilih Kecamatan" id="kecamatan_id" name="kecamatan_id" className={`mt-1 block w-full border border-gray-200 text-sm text-gray-600 rounded-md shadow-sm focus:ring focus:ring-opacity-50`}>
                                 <option value="">--Pilih Kecamatan --</option>
@@ -115,7 +117,7 @@ export default function Create({kecamatans, kelurahans, korlaps, kormas} : {
                                 }
                             </select>
                         </div>
-                        <div className="mb-4">
+                        <div className="md:mb-4 mb-2">
                             <label htmlFor="nama" className="block text-sm font-medium text-gray-700">Nama Kelurahan</label>
                             <select aria-label="Pilih Kelurahan" id="kelurahan_id" name="kelurahan_id" className={`mt-1 block w-full border border-gray-200 text-sm text-gray-600 rounded-md shadow-sm focus:ring focus:ring-opacity-50`}>
                                 <option value="">--Pilih Kelurahan --</option>
@@ -127,22 +129,22 @@ export default function Create({kecamatans, kelurahans, korlaps, kormas} : {
                             </select>
                         </div>
                     </div>
-                    <div className="grid grid-cols-3 gap-4">
-                        <div className="mb-4">
+                    <div className="grid grid-cols-3 md:gap-4">
+                        <div className="md:mb-4 mb-2">
                             <label htmlFor="rw" className="block text-sm font-medium text-gray-700">RW</label>
                             <Input type="text" onChange={(e) => setData('rw', e.target.value)} placeholder="RW" name="rw" className={`mt-1 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50`} />
                         </div>
-                        <div className="mb-4">
+                        <div className="md:mb-4 mb-2">
                             <label htmlFor="rt" className="block text-sm font-medium text-gray-700">RT</label>
                             <Input type="text" onChange={(e) => setData('rt', e.target.value)} placeholder="RT" name="rt" className={`mt-1 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50`} />
                         </div>
-                        <div className="mb-4">
+                        <div className="md:mb-4 mb-2">
                             <label htmlFor="tps" className="block text-sm font-medium text-gray-700">TPS</label>
                             <Input type="text" onChange={(e) => setData('tps', e.target.value)} placeholder="TPS" name="tps" className={`mt-1 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50`} />
                         </div>
                     </div>
-                    <div className="grid grid-cols-3 gap-4">
-                        <div className="mb-4">
+                    <div className="grid md:grid-cols-3 grid-cols-1 md:gap-4">
+                        <div className="md:mb-4 mb-2">
                             <label htmlFor="nik" className="block text-sm font-medium text-gray-700">Nama Korlap</label>
                             <select aria-label="Pilih Korlap" id="korlap_id" name="korlap_id" onChange={(e) => setData('korlap_id', e.target.value)} className={`mt-1 block w-full border border-gray-200 text-sm text-gray-600 rounded-md shadow-sm focus:ring focus:ring-opacity-50`}>
                                 <option value="">--Pilih Korlap --</option>
@@ -151,7 +153,7 @@ export default function Create({kecamatans, kelurahans, korlaps, kormas} : {
                                 ))}
                             </select>
                         </div>
-                        <div className="mb-4">
+                        <div className="md:mb-4 mb-2">
                             <label htmlFor="nama" className="block text-sm font-medium text-gray-700">Nama Kormas</label>
                             <select aria-label="Pilih Kormas" id="kormas_id" name="kormas_id" className={`mt-1 block w-full border border-gray-200 text-sm text-gray-600 rounded-md shadow-sm focus:ring focus:ring-opacity-50`}>
                                 <option value="">--Pilih Kormas --</option>
@@ -160,7 +162,7 @@ export default function Create({kecamatans, kelurahans, korlaps, kormas} : {
                                 ))}
                             </select>
                         </div>
-                        <div className="mb-4">
+                        <div className="md:mb-4 mb-2">
                             <label htmlFor="tps" className="block text-sm font-medium text-gray-700">Nomor HP</label>
                             <Input type="text" onChange={(e) => setData('no_hp', e.target.value)} placeholder="Nomor HP" name="no_hp" className={`mt-1 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50`} />
                         </div>
@@ -174,7 +176,7 @@ export default function Create({kecamatans, kelurahans, korlaps, kormas} : {
                     {fields.map((field, index) => (
                         <div key={index} className="mb-4 border p-4 rounded-md shadow-sm">
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div className="mb-4">
+                                <div className="md:mb-4">
                                     <label htmlFor="nik" className="block text-sm font-medium text-gray-700">NIK</label>
                                     <Input type="text" value={field.nik} onChange={(e) => handleChange(index, 'nik', e.target.value)} placeholder="NIK" name="nik" className={`mt-1 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50`} />
                                 </div>
@@ -192,11 +194,47 @@ export default function Create({kecamatans, kelurahans, korlaps, kormas} : {
                         </div>
                     ))}
                     
-                    <Button disabled={processing} type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-md mt-4">
-                        {processing ? 'Menyimpan...' : 'Simpan'}
-                    </Button>
+                    <div className="flex gap-4 items-center">
+                        <Button disabled={processing} type="submit" className="px-4 py-2 rounded-md mt-4">
+                            {processing ? 'Menyimpan...' : 'Simpan'}
+                        </Button>
+                        <UploadExcel>
+                            <Button type="button" className="px-4 py-2 rounded-md mt-4">Upload File Excel</Button>
+                        </UploadExcel>
+                    </div>
                 </form>
             </div>
         </Template>
+    )
+}
+
+const UploadExcel = ({children} : {children: React.ReactNode}) => {
+    const handleFiles = (files: File[]) => {
+        console.log('Files diterima:', files)
+    }
+    return (
+        <Drawer>
+            <DrawerTrigger>{children}</DrawerTrigger>
+            <DrawerContent>
+                <DrawerHeader>
+                    <DrawerTitle>Upload File Excel?</DrawerTitle>
+                    <DrawerDescription>Proses upload data dengan file excel.</DrawerDescription>
+                </DrawerHeader>
+                <div className="container mx-auto">
+                    <div className="p-4">
+                        <UploadFile onFilesAccepted={handleFiles} />
+                        <InputError message="" className="mt-2 text-red-600" />
+                    </div>
+                </div>
+                <DrawerFooter>
+                    <div className="flex justify-center items-center gap-4">
+                        <Button onClick={() => console.log('Simpan')}>Simpan</Button>
+                        <DrawerClose>
+                            <Button variant="outline">Cancel</Button>
+                        </DrawerClose>
+                    </div>
+                </DrawerFooter>
+            </DrawerContent>
+        </Drawer>
     )
 }
