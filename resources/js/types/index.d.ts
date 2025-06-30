@@ -35,8 +35,6 @@ export interface Kelurahan {
 export interface Datapemilih {
     id: number;
     no_kk: number;
-    nik: number;
-    nama: string;
     alamat: string;
     rt: string;
     rw: string;

@@ -7,7 +7,7 @@ import UploadFile from "@/Components/UploadFile";
 import Template from "@/Layouts/Template";
 import { Link, useForm } from "@inertiajs/react";
 import { ArrowLeft, Plus } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface InputField {
   nik: string;
@@ -69,24 +69,15 @@ export default function Create({kecamatans, kelurahans, korlaps, kormas} : {
         setFields(newFields)
     }
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        alert(JSON.stringify(fields, null, 2))
-    }
-
     const handlerSimpan = (e: React.FormEvent) => {
         e.preventDefault();
-
-        setData('anggota', fields);
-        post(route('datapemilih.store'), {
-            onFinish: () => {
-                setFields([{ nik: '', nama: '' }]);
-                reset();
-            },
-        })
+        post(route('datapemilih.store'))
     }
 
-
+    useEffect(() => {
+        setData('anggota', fields);
+    }, [fields]);
+    
     return (
         <Template title="Tambah Data Pemilih">
             <div className="container mx-auto p-3">
@@ -97,18 +88,36 @@ export default function Create({kecamatans, kelurahans, korlaps, kormas} : {
                     <div className="grid md:grid-cols-2 grid-cols-1 md:gap-4">
                         <div className="md:mb-4 mb-2">
                             <label htmlFor="no_kk" className="block text-sm font-medium text-gray-700">No Kartu Keluarga</label>
-                            <Input type="text" onChange={(e) => setData('no_kk', e.target.value)} placeholder="Masukan Nomor Kartu Keluarga" name="no_kk" className={`${errors.no_kk ? 'border-red-600' : ''} mt-1 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50`} />
+                            <Input 
+                            type="text" 
+                            value={data.no_kk} 
+                            onChange={(e) => setData('no_kk', e.target.value)} 
+                            placeholder="Masukan Nomor Kartu Keluarga" 
+                            name="no_kk" 
+                            className={`${errors.no_kk ? 'border-red-600' : ''} mt-1 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50`} />
                             <InputError message={errors.no_kk} className="mt-2 text-red-600" />
                         </div>
                         <div className="md:mb-4 mb-2">
                             <label htmlFor="alamat" className="block text-sm font-medium text-gray-700">Alamat</label>
-                            <Input type="text" onChange={(e) => setData('alamat', e.target.value)} placeholder="Alamat" name="alamat" className={`mt-1 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50`} />
+                            <Input 
+                            type="text" 
+                            value={data.alamat} 
+                            onChange={(e) => setData('alamat', e.target.value)} 
+                            placeholder="Alamat" 
+                            name="alamat" 
+                            className={`mt-1 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50`} />
                         </div>
                     </div>
                     <div className="grid grid-cols-2 md:gap-4">
                         <div className="md:mb-4 mb-2">
                             <label htmlFor="nik" className="block text-sm font-medium text-gray-700">Nama Kecamatan</label>
-                            <select onChange={(e) => handlerFilterKelurahan(e.target.value)} aria-label="Pilih Kecamatan" id="kecamatan_id" name="kecamatan_id" className={`mt-1 block w-full border border-gray-200 text-sm text-gray-600 rounded-md shadow-sm focus:ring focus:ring-opacity-50`}>
+                            <select 
+                            defaultValue={data.kecamatan_id} 
+                            onChange={(e) => handlerFilterKelurahan(e.target.value)} 
+                            title="Pilih Kecamatan" 
+                            id="kecamatan_id" 
+                            name="kecamatan_id" 
+                            className={`mt-1 block w-full border border-gray-200 text-sm text-gray-600 rounded-md shadow-sm focus:ring focus:ring-opacity-50`}>
                                 <option value="">--Pilih Kecamatan --</option>
                                 {
                                     kecamatans.map((kecamatan, index) => (
@@ -119,7 +128,13 @@ export default function Create({kecamatans, kelurahans, korlaps, kormas} : {
                         </div>
                         <div className="md:mb-4 mb-2">
                             <label htmlFor="nama" className="block text-sm font-medium text-gray-700">Nama Kelurahan</label>
-                            <select aria-label="Pilih Kelurahan" id="kelurahan_id" name="kelurahan_id" className={`mt-1 block w-full border border-gray-200 text-sm text-gray-600 rounded-md shadow-sm focus:ring focus:ring-opacity-50`}>
+                            <select 
+                            defaultValue={data.kelurahan_id} 
+                            title="Pilih Kelurahan" 
+                            id="kelurahan_id" 
+                            name="kelurahan_id" 
+                            onChange={(e) => setData('kelurahan_id', e.target.value)}
+                            className={`mt-1 block w-full border border-gray-200 text-sm text-gray-600 rounded-md shadow-sm focus:ring focus:ring-opacity-50`}>
                                 <option value="">--Pilih Kelurahan --</option>
                                 {
                                     selectedKelurahan.map((kelurahan, index) => (
@@ -132,21 +147,45 @@ export default function Create({kecamatans, kelurahans, korlaps, kormas} : {
                     <div className="grid grid-cols-3 md:gap-4">
                         <div className="md:mb-4 mb-2">
                             <label htmlFor="rw" className="block text-sm font-medium text-gray-700">RW</label>
-                            <Input type="text" onChange={(e) => setData('rw', e.target.value)} placeholder="RW" name="rw" className={`mt-1 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50`} />
+                            <Input 
+                            type="text" 
+                            value={data.rw} 
+                            onChange={(e) => setData('rw', e.target.value)} 
+                            placeholder="RW" 
+                            name="rw" 
+                            className={`mt-1 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50`} />
                         </div>
                         <div className="md:mb-4 mb-2">
                             <label htmlFor="rt" className="block text-sm font-medium text-gray-700">RT</label>
-                            <Input type="text" onChange={(e) => setData('rt', e.target.value)} placeholder="RT" name="rt" className={`mt-1 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50`} />
+                            <Input 
+                            type="text" 
+                            value={data.rt} 
+                            onChange={(e) => setData('rt', e.target.value)} 
+                            placeholder="RT" 
+                            name="rt" 
+                            className={`mt-1 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50`} />
                         </div>
                         <div className="md:mb-4 mb-2">
                             <label htmlFor="tps" className="block text-sm font-medium text-gray-700">TPS</label>
-                            <Input type="text" onChange={(e) => setData('tps', e.target.value)} placeholder="TPS" name="tps" className={`mt-1 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50`} />
+                            <Input 
+                            type="text" 
+                            value={data.tps} 
+                            onChange={(e) => setData('tps', e.target.value)} 
+                            placeholder="TPS" 
+                            name="tps" 
+                            className={`mt-1 block w-full border rounded-md shadow-sm focus:ring focus:ring-opacity-50`} />
                         </div>
                     </div>
                     <div className="grid md:grid-cols-3 grid-cols-1 md:gap-4">
                         <div className="md:mb-4 mb-2">
                             <label htmlFor="nik" className="block text-sm font-medium text-gray-700">Nama Korlap</label>
-                            <select aria-label="Pilih Korlap" id="korlap_id" name="korlap_id" onChange={(e) => setData('korlap_id', e.target.value)} className={`mt-1 block w-full border border-gray-200 text-sm text-gray-600 rounded-md shadow-sm focus:ring focus:ring-opacity-50`}>
+                            <select 
+                            defaultValue={data.korlap_id} 
+                            aria-label="Pilih Korlap" 
+                            id="korlap_id" 
+                            name="korlap_id" 
+                            onChange={(e) => setData('korlap_id', e.target.value)} 
+                            className={`mt-1 block w-full border border-gray-200 text-sm text-gray-600 rounded-md shadow-sm focus:ring focus:ring-opacity-50`}>
                                 <option value="">--Pilih Korlap --</option>
                                 {korlaps.map((korlap) => (
                                     <option key={korlap.id} value={korlap.id}>{korlap.nama}</option>
@@ -155,7 +194,13 @@ export default function Create({kecamatans, kelurahans, korlaps, kormas} : {
                         </div>
                         <div className="md:mb-4 mb-2">
                             <label htmlFor="nama" className="block text-sm font-medium text-gray-700">Nama Kormas</label>
-                            <select aria-label="Pilih Kormas" id="kormas_id" name="kormas_id" className={`mt-1 block w-full border border-gray-200 text-sm text-gray-600 rounded-md shadow-sm focus:ring focus:ring-opacity-50`}>
+                            <select 
+                            defaultValue={data.kormas_id} 
+                            title="Pilih Kormas" 
+                            id="kormas_id" 
+                            name="kormas_id" 
+                            onChange={(e) => setData('kormas_id', e.target.value)} 
+                            className={`mt-1 block w-full border border-gray-200 text-sm text-gray-600 rounded-md shadow-sm focus:ring focus:ring-opacity-50`}>
                                 <option value="">--Pilih Kormas --</option>
                                 {kormas.map((kormas) => (
                                     <option key={kormas.id} value={kormas.id}>{kormas.nama}</option>
@@ -169,12 +214,16 @@ export default function Create({kecamatans, kelurahans, korlaps, kormas} : {
                     </div>
                     <Separator className="my-6" />
                     <div className="flex justify-end mb-4">
-                        <Button type="button" onClick={handleAdd}>
+                        <Button 
+                        type="button" 
+                        onClick={handleAdd}>
                             <Plus className="w-4 h-4 mr-2" /> Tambah Input
                         </Button>
                     </div>
                     {fields.map((field, index) => (
-                        <div key={index} className="mb-4 border p-4 rounded-md shadow-sm">
+                        <div 
+                        key={index} 
+                        className="mb-4 border p-4 rounded-md shadow-sm">
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div className="md:mb-4">
                                     <label htmlFor="nik" className="block text-sm font-medium text-gray-700">NIK</label>

@@ -16,14 +16,14 @@ class DataPemilihController extends Controller
     {
         $data['datapemilih'] = DataPemilih::leftJoin('kelurahans', 'data_pemilihs.kelurahan_id', '=', 'kelurahans.id')
             ->leftJoin('kecamatans', 'data_pemilihs.kecamatan_id', '=', 'kecamatans.id')
-            ->leftJoin('users as korlap', 'data_pemilihs.korlap_id', '=', 'korlap.id')
-            ->leftJoin('users as kormas', 'data_pemilihs.kormas_id', '=', 'kormas.id')
+            ->leftJoin('kor_lap_mas as korlap', 'data_pemilihs.korlap_id', '=', 'korlap.id')
+            ->leftJoin('kor_lap_mas as kormas', 'data_pemilihs.kormas_id', '=', 'kormas.id')
             ->select(
                 'data_pemilihs.*',
                 'kelurahans.nama_kelurahan as nama_kelurahan',
                 'kecamatans.nama_kecamatan as nama_kecamatan',
-                'korlap.name as nama_korlap',
-                'kormas.name as nama_kormas'
+                'korlap.nama as nama_korlap',
+                'kormas.nama as nama_kormas'
             )
             ->get();
         return Inertia::render("Datapemilih/Index", $data);
@@ -42,8 +42,6 @@ class DataPemilihController extends Controller
     {
         $data = $request->validate([
             'no_kk' => 'required|numeric',
-            'nik' => 'required|unique:data_pemilihs,nik',
-            'nama' => 'required',
             'alamat' => 'required',
             'rw' => 'required',
             'rt' => 'required',
@@ -51,23 +49,20 @@ class DataPemilihController extends Controller
             'no_hp' => 'required|numeric|min:11',
             'kelurahan_id' => 'required|exists:kelurahans,id',
             'kecamatan_id' => 'required|exists:kecamatans,id',
-            'korlap_id' => 'nullable|exists:users,id',
-            'kormas_id' => 'nullable|exists:users,id',
+            'korlap_id' => 'required',
+            'kormas_id' => 'required',
             'anggota' => 'required|array',
             'anggota.*.nik' => 'required|numeric|unique:data_pemilihs,nik',
             'anggota.*.nama' => 'required|string',
         ], [
             'no_kk.required' => 'Nomor KK harus diisi.',
             'no_kk.numeric' => 'Nomor KK harus berupa angka.',
-            'nik.required' => 'NIK harus diisi.',
-            'nik.unique' => 'NIK sudah terdaftar.',
-            'nama.required' => 'Nama harus diisi.',
             'kelurahan_id.exists' => 'Kelurahan tidak ditemukan.',
             'kelurahan_id.required' => 'Kelurahan harus dipilih.',
             'kecamatan_id.exists' => 'Kecamatan tidak ditemukan.',
             'kecamatan_id.required' => 'Kecamatan harus dipilih.',
-            'korlap_id.exists' => 'Koordinator Lapangan tidak ditemukan.',
-            'kormas_id.exists' => 'Koordinator Masyarakat tidak ditemukan.',
+            'korlap_id.required' => 'Koordinator Lapangan tidak boleh kosong.',
+            'kormas_id.required' => 'Koordinator Masyarakat tidak boleh kosong.',
             'no_hp.min' => 'Nomor HP harus minimal 11 digit.',
             'rw.required' => 'RW harus diisi.',
             'rt.required' => 'RT harus diisi.',
@@ -83,7 +78,20 @@ class DataPemilihController extends Controller
             'anggota.*.nama.required' => 'Nama anggota harus diisi.',
         ]);
 
-        DataPemilih::create($data);
+        foreach ($data['anggota'] as $anggota) {
+            $anggota['no_kk'] = $data['no_kk'];
+            $anggota['alamat'] = $data['alamat'];
+            $anggota['rw'] = $data['rw'];
+            $anggota['rt'] = $data['rt'];
+            $anggota['tps'] = $data['tps'];
+            $anggota['no_hp'] = $data['no_hp'];
+            $anggota['kelurahan_id'] = $data['kelurahan_id'];
+            $anggota['kecamatan_id'] = $data['kecamatan_id'];
+            $anggota['korlap_id'] = $data['korlap_id'];
+            $anggota['kormas_id'] = $data['kormas_id'];
+
+            DataPemilih::create($anggota);
+        }
 
         return redirect()->route('datapemilih.index')->with('success', 'Data Pemilih berhasil ditambahkan.');
     }
@@ -138,9 +146,13 @@ class DataPemilihController extends Controller
 
     public function destroy($id)
     {
-        $datapemilih = DataPemilih::findOrFail($id);
-        $datapemilih->delete();
+        try {
+            $datapemilih = DataPemilih::findOrFail($id);
+            $datapemilih->delete();
 
-        return redirect()->route('datapemilih.index')->with('success', 'Data Pemilih berhasil dihapus.');
+            return redirect()->route('datapemilih.index')->with('success', 'Data Pemilih berhasil dihapus.');
+        } catch (\Throwable $th) {
+            return redirect()->route('datapemilih.index')->with('error', 'Data Pemilih gagal dihapus.');
+        }
     }
 }

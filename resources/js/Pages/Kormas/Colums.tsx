@@ -12,7 +12,7 @@ export const columns: ColumnDef<User>[] = [
       cell: ({ row }) => <span className="font-medium">{row.index + 1}</span>,
     },
     {
-      accessorKey: "name",
+      accessorKey: "nama",
       header: ({ column }) => {
         return (
             <Button
@@ -24,10 +24,10 @@ export const columns: ColumnDef<User>[] = [
             </Button>
         )
       },
-      cell: ({ row }) => <span className="font-medium">{row.getValue("name")}</span>,
+      cell: ({ row }) => <span className="font-medium">{row.getValue("nama")}</span>,
     },
     {
-      accessorKey: "email",
+      accessorKey: "alamat",
       header: ({ column }) => {
         return (
             <Button
@@ -39,37 +39,22 @@ export const columns: ColumnDef<User>[] = [
             </Button>
         )
       },
-      cell: ({ row }) => <span className="font-medium">{row.getValue("email")}</span>,
-    },
-    {
-      accessorKey: "role",
-      header: ({ column }) => {
-        return (
-            <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-            >
-            Role
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-            </Button>
-        )
-      },
-      cell: ({ row }) => <span className="font-medium">{row.getValue("role")}</span>,
-    },
-    {
-      accessorKey: "alamat",
-      header: ({ column }) => {
-        return (
-            <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-            >
-            Alamat
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-            </Button>
-        )
-      },
       cell: ({ row }) => <span className="font-medium">{row.getValue("alamat")}</span>,
+    },
+    {
+      accessorKey: "no_hp",
+      header: ({ column }) => {
+        return (
+            <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            >
+            No Telpon
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        )
+      },
+      cell: ({ row }) => <span className="font-medium">{row.getValue("no_hp")}</span>,
     },
     {
       header: "Actions",
@@ -113,7 +98,7 @@ export const hapusData = (id : number) => {
     reverseButtons: true
   }).then((result) => {
     if (result.isConfirmed) {
-        router.delete(route('team.destroy', id))
+        router.delete(route('kormas.destroy', id))
     }
   });
 }
@@ -137,7 +122,7 @@ const EditData = (id : number) => {
         reverseButtons: true
     }).then((result) => {
         if (result.isConfirmed) {
-            router.get(route('team.edit', id))
+            router.get(route('kormas.edit', id))
         }
     })
 }
