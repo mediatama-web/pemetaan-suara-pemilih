@@ -1,7 +1,7 @@
 import { Button } from '@/Components/ui/button'
 import { cn } from '@/lib/utils'
-import { UploadCloud } from 'lucide-react'
-import React, { useCallback } from 'react'
+import { FileText, UploadCloud } from 'lucide-react'
+import React, { useCallback, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 
 type UploadFileProps = {
@@ -9,8 +9,11 @@ type UploadFileProps = {
 }
 
 const UploadFile: React.FC<UploadFileProps> = ({ onFilesAccepted }) => {
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([])
+
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
+      setSelectedFiles(acceptedFiles)
       onFilesAccepted(acceptedFiles)
     },
     [onFilesAccepted]
@@ -18,7 +21,7 @@ const UploadFile: React.FC<UploadFileProps> = ({ onFilesAccepted }) => {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    multiple: true,
+    multiple: true, // atur ke false kalau hanya 1 file
   })
 
   return (
@@ -31,9 +34,16 @@ const UploadFile: React.FC<UploadFileProps> = ({ onFilesAccepted }) => {
     >
       <input {...getInputProps()} />
       <div className="flex flex-col items-center gap-2">
-        <UploadCloud className="h-8 w-8 text-gray-500" />
+        {
+          selectedFiles.length > 0 ?
+            <FileText className="h-8 w-8 text-gray-500" />
+          :
+            <UploadCloud className="h-8 w-8 text-gray-500" />
+        }
         <p className="text-sm text-gray-600">
-          Tarik file ke sini atau klik untuk memilih
+          {selectedFiles.length > 0
+            ? selectedFiles.map(file => file.name).join(', ')
+            : 'Tarik file ke sini atau klik untuk memilih'}
         </p>
         <Button variant="outline" className="mt-2">
           Pilih File

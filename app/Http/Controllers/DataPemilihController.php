@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\DataPemilihImport;
 use App\Models\DataPemilih;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
@@ -9,6 +10,7 @@ use App\Models\KorLapMas;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DataPemilihController extends Controller
 {
@@ -46,7 +48,7 @@ class DataPemilihController extends Controller
             'rw' => 'required',
             'rt' => 'required',
             'tps' => 'required',
-            'no_hp' => 'required|numeric|min:11',
+            'no_hp' => 'nullable|numeric|min:11',
             'kelurahan_id' => 'required|exists:kelurahans,id',
             'kecamatan_id' => 'required|exists:kecamatans,id',
             'korlap_id' => 'required',
@@ -67,7 +69,6 @@ class DataPemilihController extends Controller
             'rw.required' => 'RW harus diisi.',
             'rt.required' => 'RT harus diisi.',
             'tps.required' => 'TPS harus diisi.',
-            'no_hp.required' => 'Nomor HP harus diisi.',
             'no_hp.numeric' => 'Nomor HP harus berupa angka.',
             'alamat.required' => 'Alamat harus diisi.',
             'anggota.required' => 'Anggota harus diisi.',
@@ -154,5 +155,28 @@ class DataPemilihController extends Controller
         } catch (\Throwable $th) {
             return redirect()->route('datapemilih.index')->with('error', 'Data Pemilih gagal dihapus.');
         }
+    }
+
+    public function show()
+    {
+        $file = public_path('assets/template/template.xlsx');
+
+        if (!file_exists($file)) {
+            abort(404);
+        }
+
+        return response()->download($file);
+    }
+
+    public function importExcel(Request $request)
+    {
+        $file = $request->file('file');
+        $import = Excel::import(new DataPemilihImport, $file, \Maatwebsite\Excel\Excel::XLSX);
+
+        if (!$import) {
+            return redirect()->route('datapemilih.index')->with('error', 'Data Pemilih gagal diimport.');
+        }
+
+        return redirect()->route('datapemilih.index')->with('success', 'Data Pemilih berhasil diimport.');
     }
 }

@@ -6,7 +6,7 @@ import { Separator } from "@/Components/ui/separator";
 import UploadFile from "@/Components/UploadFile";
 import Template from "@/Layouts/Template";
 import { Link, useForm } from "@inertiajs/react";
-import { ArrowLeft, Plus } from "lucide-react";
+import { ArrowLeft, HardDriveDownloadIcon, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 
 interface InputField {
@@ -258,8 +258,15 @@ export default function Create({kecamatans, kelurahans, korlaps, kormas} : {
 }
 
 const UploadExcel = ({children} : {children: React.ReactNode}) => {
+    const { data, setData, post, processing, errors } = useForm<{file: File | null}>({
+        file: null
+    })
     const handleFiles = (files: File[]) => {
-        console.log('Files diterima:', files)
+        setData('file', files[0])
+    }
+
+    const handleUpload = () => {
+        post(route('datapemilih.import'))
     }
     return (
         <Drawer>
@@ -270,6 +277,10 @@ const UploadExcel = ({children} : {children: React.ReactNode}) => {
                     <DrawerDescription>Proses upload data dengan file excel.</DrawerDescription>
                 </DrawerHeader>
                 <div className="container mx-auto">
+                    <div className="p-4 flex items-center gap-3">
+                        <span>Download File Template Disini</span>
+                        <a target="_blank" href="/datapemilih/show" className="text-blue-600 hover:underline flex items-center gap-2"><HardDriveDownloadIcon className="w-5 h-5"/> Download</a>
+                    </div>
                     <div className="p-4">
                         <UploadFile onFilesAccepted={handleFiles} />
                         <InputError message="" className="mt-2 text-red-600" />
@@ -277,9 +288,9 @@ const UploadExcel = ({children} : {children: React.ReactNode}) => {
                 </div>
                 <DrawerFooter>
                     <div className="flex justify-center items-center gap-4">
-                        <Button onClick={() => console.log('Simpan')}>Simpan</Button>
+                        <Button type="button" onClick={handleUpload} disabled={processing} className="px-4 py-2 rounded-md">{processing ? 'Menyimpan...' : 'Simpan'}</Button>
                         <DrawerClose>
-                            <Button variant="outline">Cancel</Button>
+                            <Button type="button" variant="outline">Cancel</Button>
                         </DrawerClose>
                     </div>
                 </DrawerFooter>

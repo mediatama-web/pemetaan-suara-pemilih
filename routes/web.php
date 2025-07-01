@@ -27,12 +27,11 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::resource('team', UserController::class);
     // data pemilih
     Route::resource('datapemilih', DataPemilihController::class);
+    Route::post('datapemilih.import', [DataPemilihController::class, 'importExcel'])->name('datapemilih.import');
     // data kormas
     Route::resource('kormas', KormasController::class);
     // data korlap
     Route::resource('korlap', KorlapController::class);
-
-
     // logout
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
