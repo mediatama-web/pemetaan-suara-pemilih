@@ -19,7 +19,8 @@ class DataPemilih extends Model
         'korlap_id',
         'kormas_id',
         'tps',
-        'no_hp'
+        'no_hp',
+        'user_id'
     ];
 
     public function kelurahan()

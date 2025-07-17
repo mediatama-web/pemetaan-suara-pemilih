@@ -1,9 +1,8 @@
 import {
   BellIcon,
-  CreditCardIcon,
   LogOutIcon,
   MoreVerticalIcon,
-  UserCircleIcon,
+  UserCircleIcon
 } from "lucide-react"
 
 import {
@@ -89,10 +88,6 @@ export function NavUser({
               <DropdownMenuItem>
                 <UserCircleIcon />
                 Account
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCardIcon />
-                Billing
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <BellIcon />

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AnggotaDewan;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,13 +16,14 @@ class UserController extends Controller
 {
     public function index()
     {
-        $data['users'] = User::all();
+        $data['users'] = User::with('anggotaDewan')->get();
         return Inertia::render('Team/Index', $data);
     }
 
     public function create()
     {
-        return Inertia::render('Team/Create/Index');
+        $data['anggota_dewans'] = AnggotaDewan::get();
+        return Inertia::render('Team/Create/Index', $data);
     }
 
     public function store(Request $request)
@@ -31,7 +33,8 @@ class UserController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed|',
             'alamat' => 'nullable|string',
-            'role' => 'required'
+            'role' => 'required',
+            'anggota_dewan_id' => 'nullable|exists:anggota_dewans,id',
         ], [
             'name.required' => 'Nama tidak boleh kosong.',
             'name.string' => 'Nama harus string.',
@@ -46,6 +49,7 @@ class UserController extends Controller
             'password.confirmed' => 'Password tidak cocok.',
             'alamat.string' => 'Alamat harus string.',
             'role.required' => 'Role tidak boleh kosong.',
+            'anggota_dewan_id.exists' => 'Anggota Dewan tidak ditemukan.',
         ]);
 
         if ($cek->fails()) {
@@ -73,10 +77,10 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        $user = User::findOrFail($id);
-        return Inertia::render('Team/Edit/Index', [
-            'team' => $user,
-        ]);
+
+        $data['anggota_dewans'] = AnggotaDewan::get();
+        $data['team'] = User::findOrFail($id);
+        return Inertia::render('Team/Edit/Index', $data);
     }
 
     public function update(Request $request, User $user)
@@ -86,7 +90,8 @@ class UserController extends Controller
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:8|confirmed|',
             'alamat' => 'nullable|string',
-            'role' => 'required'
+            'role' => 'required',
+            'anggota_dewan_id' => 'nullable|exists:anggota_dewans,id',
         ], [
             'name.required' => 'Nama tidak boleh kosong.',
             'name.string' => 'Nama harus string.',
@@ -100,6 +105,7 @@ class UserController extends Controller
             'password.confirmed' => 'Password tidak cocok.',
             'alamat.string' => 'Alamat harus string.',
             'role.required' => 'Role tidak boleh kosong.',
+            'anggota_dewan_id.exists' => 'Anggota Dewan tidak ditemukan.',
         ]);
 
         if ($cek->fails()) {
@@ -110,6 +116,8 @@ class UserController extends Controller
             $user->name = $request->name;
             $user->email = $request->email;
             $user->alamat = $request->alamat;
+            $user->role = $request->role;
+            $user->anggota_dewan_id = $request->anggota_dewan_id;
 
             if ($request->filled('password')) {
                 $user->password = Hash::make($request->password);

@@ -2,10 +2,11 @@ import InputError from "@/Components/InputError";
 import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
 import Template from "@/Layouts/Template";
+import { AnggotaDewan } from "@/types";
 import { Link, useForm } from "@inertiajs/react";
 import { ArrowLeft } from "lucide-react";
 
-export default function Create() {
+export default function Create({anggota_dewans} : {anggota_dewans: AnggotaDewan[]}) {
     const { data, setData, post, processing, reset , errors} = useForm({
         name: '',
         email: '',
@@ -13,6 +14,7 @@ export default function Create() {
         password_confirmation: '',
         alamat: '',
         role: '',
+        anggota_dewan_id: '',
     });
 
     const handlerSimpan = (e: React.FormEvent) => {
@@ -99,6 +101,26 @@ export default function Create() {
                             </select>
                         <InputError message={errors.role} className="mt-2 text-red-600" />
                     </div>
+                    
+                    {data.role === 'admin' && (
+                        <div className="mb-4">
+                            <label htmlFor="anggota_dewan_id" className="block text-sm font-medium text-gray-700">Anggota Dewan</label>
+                            <select 
+                                title="anggota_dewan_id"
+                                value={data.anggota_dewan_id}
+                                onChange={(e) => setData('anggota_dewan_id', e.target.value)} 
+                                name="anggota_dewan_id" 
+                                className={`${errors.anggota_dewan_id ? 'border-red-600' : ''} mt-1 block w-full p-1 border-gray-200 border rounded-md shadow-sm focus:ring focus:ring-opacity-50`}>
+                                    <option value="">-- PILIH --</option>
+                                    {
+                                        anggota_dewans.map((anggota_dewan) => (
+                                            <option key={anggota_dewan.id} value={anggota_dewan.id}>{anggota_dewan.nama}</option>
+                                        ))
+                                    }
+                            </select>
+                            <InputError message={errors.anggota_dewan_id} className="mt-2 text-red-600" />
+                        </div>
+                    )}
                     <Button disabled={processing} type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-md">
                         {processing ? 'Menyimpan...' : 'Simpan'}
                     </Button>

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
+    AnggotaDewanController,
     AuthController,
     DashboardController,
     DataPemilihController,
@@ -25,6 +26,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::resource('kelurahan', KelurahanController::class);
     // team
     Route::resource('team', UserController::class);
+    // anggota dewan
+    Route::resource('anggotadewan', AnggotaDewanController::class);
     // data pemilih
     Route::resource('datapemilih', DataPemilihController::class);
     Route::post('datapemilih.import', [DataPemilihController::class, 'importExcel'])->name('datapemilih.import');

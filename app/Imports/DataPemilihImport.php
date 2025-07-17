@@ -7,8 +7,8 @@ use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\KorLapMas;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\WithProgressBar;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 
 class DataPemilihImport implements ToCollection, WithStartRow
@@ -54,6 +54,7 @@ class DataPemilihImport implements ToCollection, WithStartRow
                 'korlap_id'     => $korlap->id,
                 'kormas_id'     => $kormas->id,
                 'no_hp'         => $a[11],
+                'user_id'       => Auth::user()->id
             ]);
         }
     }

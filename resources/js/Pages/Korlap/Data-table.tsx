@@ -12,7 +12,6 @@ import {
 } from "@tanstack/react-table"
 
 import { Button } from "@/Components/ui/button"
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "@/Components/ui/dropdown-menu"
 import { Input } from "@/Components/ui/input"
 import {
     Table,
@@ -23,7 +22,7 @@ import {
     TableRow,
 } from "@/Components/ui/table"
 import { Link } from "@inertiajs/react"
-import { LucideEyeOff, Plus } from "lucide-react"
+import { Plus } from "lucide-react"
 import { useState } from "react"
 
 interface DataTableProps<TData, TValue> {
@@ -66,7 +65,7 @@ export function DataTable<TData, TValue>({
             <Link href="/korlap/create" className="flex items-center gap-3 p-2 bg-gray-800 text-white rounded-lg md:text-md text-xs md:w-32 text-center"><Plus /><span className="hidden md:block">Tambah</span></Link>
             {/*  */}
             <Input placeholder="Cari..." value={(table.getColumn("nama")?.getFilterValue() as string) ?? ""} onChange={(event) => table.getColumn("email")?.setFilterValue(event.target.value)} className="max-w-xs"/>
-            <DropdownMenu>
+            {/* <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button variant="outline" className="ml-auto">
                         <LucideEyeOff className="mr-2 h-4 w-4" />
@@ -93,7 +92,7 @@ export function DataTable<TData, TValue>({
                         )
                     })}
                 </DropdownMenuContent>
-            </DropdownMenu>
+            </DropdownMenu> */}
         </div>
         {/*  */}
         <div className="rounded-md border">

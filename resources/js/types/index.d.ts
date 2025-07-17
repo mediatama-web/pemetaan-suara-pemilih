@@ -2,8 +2,10 @@ export interface User {
     id: number;
     name: string;
     email: string;
-    role: string;
     alamat: string;
+    role: string;
+    anggota_dewan_id?: number | null;
+    anggota_dewan?: AnggotaDewan | null;
     email_verified_at?: string;
 }
 
@@ -51,3 +53,20 @@ export interface Datapemilih {
     created_at: string;
     updated_at: string;
 }
+
+export type Team = {
+    id: number,
+    name: string,
+    email: string,
+    alamat: string,
+    role: string,
+    anggota_dewan_id: string
+} 
+
+export type AnggotaDewan = {
+    id: number;
+    nama: string;
+    posisi: 'ri' | 'prov' | 'dpr' | 'dprd' | string;
+    created_at: string;
+    updated_at: string;
+} 

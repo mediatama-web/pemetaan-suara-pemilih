@@ -23,7 +23,7 @@ return new class extends Migration
             $table->integer("kecamatan_id")->nullable();
             $table->integer('korlap_id')->nullable();
             $table->integer('kormas_id')->nullable();
-            $table->integer('tps')->nullable();
+            $table->string('tps')->nullable();
             $table->string("no_hp")->nullable();
             $table->timestamps();
         });

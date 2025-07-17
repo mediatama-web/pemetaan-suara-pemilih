@@ -1,18 +1,18 @@
 import { Button } from "@/Components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/Components/ui/dropdown-menu"
-import { User } from "@/types"
+import { AnggotaDewan } from "@/types"
 import { router } from "@inertiajs/react"
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, MoreVerticalIcon } from "lucide-react"
 import Swal from 'sweetalert2'
 
-export const columns: ColumnDef<User>[] = [
+export const columns: ColumnDef<AnggotaDewan>[] = [
     {
       header: "No",
       cell: ({ row }) => <span className="font-medium">{row.index + 1}</span>,
     },
     {
-      accessorKey: "name",
+      accessorKey: "nama",
       header: ({ column }) => {
         return (
             <Button
@@ -24,71 +24,22 @@ export const columns: ColumnDef<User>[] = [
             </Button>
         )
       },
-      cell: ({ row }) => <span className="font-medium">{row.getValue("name")}</span>,
+      cell: ({ row }) => <span className="font-medium">{row.getValue("nama")}</span>,
     },
     {
-      id: "anggota_dewan_nama",
-      header: ({ column }) => {
-        return (
-            <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-            Team
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-            </Button>
-        )
-      },
-      cell: ({ row }) => {
-        const user = row.original;
-        return (
-          <span className="font-medium">
-            {user.anggota_dewan ? user.anggota_dewan.nama : "-"}
-          </span>
-        );
-      }
-    },
-    {
-      accessorKey: "email",
+      accessorKey: "posisi",
       header: ({ column }) => {
         return (
             <Button
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
             >
-            Email
+            Wilayah
             <ArrowUpDown className="ml-2 h-4 w-4" />
             </Button>
         )
       },
-      cell: ({ row }) => <span className="font-medium">{row.getValue("email")}</span>,
-    },
-    {
-      accessorKey: "role",
-      header: ({ column }) => {
-        return (
-            <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-            >
-            Role
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-            </Button>
-        )
-      },
-      cell: ({ row }) => <span className="font-medium">{row.getValue("role")}</span>,
-    },
-    {
-      accessorKey: "alamat",
-      header: ({ column }) => {
-        return (
-            <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-            >
-            Alamat
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-            </Button>
-        )
-      },
-      cell: ({ row }) => <span className="font-medium">{row.getValue("alamat")}</span>,
+      cell: ({ row }) => <span className="font-medium">{row.getValue("posisi")}</span>,
     },
     {
       header: "Actions",
@@ -132,7 +83,7 @@ export const hapusData = (id : number) => {
     reverseButtons: true
   }).then((result) => {
     if (result.isConfirmed) {
-        router.delete(route('team.destroy', id))
+        router.delete(route('anggotadewan.destroy', id))
     }
   });
 }
@@ -156,7 +107,7 @@ const EditData = (id : number) => {
         reverseButtons: true
     }).then((result) => {
         if (result.isConfirmed) {
-            router.get(route('team.edit', id))
+            router.get(route('anggotadewan.edit', id))
         }
     })
 }

@@ -9,6 +9,7 @@ use App\Models\Kelurahan;
 use App\Models\KorLapMas;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -90,6 +91,7 @@ class DataPemilihController extends Controller
             $anggota['kecamatan_id'] = $data['kecamatan_id'];
             $anggota['korlap_id'] = $data['korlap_id'];
             $anggota['kormas_id'] = $data['kormas_id'];
+            $anggota['user_id'] = Auth::user()->id;
 
             DataPemilih::create($anggota);
         }
