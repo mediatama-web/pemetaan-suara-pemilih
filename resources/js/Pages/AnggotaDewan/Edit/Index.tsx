@@ -47,7 +47,7 @@ export default function Edit({anggota_dewans} : {
                             onChange={(e) => setData('posisi', e.target.value)} 
                             name="no_hp" 
                             className={`${errors.posisi ? 'border-red-600' : ''} mt-1 block w-full p-1 border-gray-200 border rounded-md shadow-sm focus:ring focus:ring-opacity-50`}>
-                                <option value="">-- PILIH ROLE --</option>
+                                <option value="">-- PILIH --</option>
                                 <option value="ri">RI</option>
                                 <option value="prov">PROVINSI</option>
                                 <option value="dpr">DPR</option>

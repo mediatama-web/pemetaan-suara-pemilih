@@ -39,7 +39,7 @@ export const columns: ColumnDef<AnggotaDewan>[] = [
             </Button>
         )
       },
-      cell: ({ row }) => <span className="font-medium">{row.getValue("posisi")}</span>,
+      cell: ({ row }) => <span className="font-medium">{String(row.getValue("posisi")).toUpperCase()}</span>,
     },
     {
       header: "Actions",

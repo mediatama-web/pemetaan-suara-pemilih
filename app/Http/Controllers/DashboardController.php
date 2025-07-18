@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DataPemilih;
+use App\Models\Kecamatan;
+use App\Models\Kelurahan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class DashboardController extends Controller
@@ -12,7 +16,20 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Dashboard/Index');
+        $user = Auth::user();
+
+        $query = DataPemilih::query();
+
+        if ($user->role === 'admin') {
+            // Admin hanya lihat data yang dia input
+            $query->where('user_id', $user->id);
+        }
+
+        $data['kecamatan'] = Kecamatan::count();
+        $data['kelurahan'] = Kelurahan::count();
+
+        $data['jumlahPemilih'] = $query->count();
+        return Inertia::render('Dashboard/Index', $data);
     }
 
     /**
