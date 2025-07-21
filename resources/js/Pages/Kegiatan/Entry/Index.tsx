@@ -5,6 +5,8 @@ export type AbsenProps = {
   kegiatan: {
     id: number
     nama_kegiatan: string
+    tanggal_mulai: string
+    tanggal_akhir: string
   }
   absenList: {
     id: number
@@ -28,6 +30,11 @@ export default function Index({ kegiatan, absenList }: AbsenProps) {
             },
         })
     }
+
+    const now = new Date()
+    const mulai = new Date(kegiatan.tanggal_mulai)
+    const akhir = new Date(kegiatan.tanggal_akhir)
+    const isOutOfRange = now < mulai || now > akhir
     return (
         <Template title="Entry Kegiatan">
             <div className="container mx-auto p-3">
@@ -48,13 +55,14 @@ export default function Index({ kegiatan, absenList }: AbsenProps) {
                             placeholder="Masukkan NIK pemilih"
                             autoFocus
                             required
+                            disabled={isOutOfRange}
                         />
                         </div>
 
                         <div>
                             <button
                                 type="submit"
-                                disabled={processing}
+                                disabled={processing || isOutOfRange}
                                 className="bg-blue-600 text-white px-5 py-2.5 rounded-md hover:bg-blue-700 transition disabled:opacity-50"
                             >
                                 Simpan Absen
