@@ -182,6 +182,8 @@ class KegiatanController extends Controller
             'kegiatan' => [
                 'id' => $kegiatan->id,
                 'nama_kegiatan' => $kegiatan->nama_kegiatan,
+                'tanggal_mulai' => $kegiatan->tanggal_mulai,
+                'tanggal_akhir' => $kegiatan->tanggal_akhir,
             ],
             'absenList' => $absenList,
         ]);

@@ -1,5 +1,6 @@
 import Template from "@/Layouts/Template";
 import { useForm } from "@inertiajs/react";
+import { useEffect, useState } from "react";
 
 export type AbsenProps = {
   kegiatan: {
@@ -16,6 +17,7 @@ export type AbsenProps = {
   }[]
 }
 export default function Index({ kegiatan, absenList }: AbsenProps) {
+    const [isOut , setIsOut] = useState<boolean>(false)
     const { data, setData, post, processing, errors, reset } = useForm({
         nik: '',
         kegiatan_id: kegiatan.id,
@@ -31,10 +33,15 @@ export default function Index({ kegiatan, absenList }: AbsenProps) {
         })
     }
 
-    const now = new Date()
-    const mulai = new Date(kegiatan.tanggal_mulai)
-    const akhir = new Date(kegiatan.tanggal_akhir)
-    const isOutOfRange = now < mulai || now > akhir
+    useEffect(() => {
+        const now = new Date()
+        const mulai = new Date(kegiatan.tanggal_mulai)
+        const akhir = new Date(kegiatan.tanggal_akhir)
+        
+        const isOutOfRange = now < mulai || now > akhir
+        setIsOut(isOutOfRange)
+    },[])
+    
     return (
         <Template title="Entry Kegiatan">
             <div className="container mx-auto p-3">
@@ -55,14 +62,14 @@ export default function Index({ kegiatan, absenList }: AbsenProps) {
                             placeholder="Masukkan NIK pemilih"
                             autoFocus
                             required
-                            disabled={isOutOfRange}
+                            disabled={isOut}
                         />
                         </div>
 
                         <div>
                             <button
                                 type="submit"
-                                disabled={processing || isOutOfRange}
+                                disabled={processing || isOut}
                                 className="bg-blue-600 text-white px-5 py-2.5 rounded-md hover:bg-blue-700 transition disabled:opacity-50"
                             >
                                 Simpan Absen
