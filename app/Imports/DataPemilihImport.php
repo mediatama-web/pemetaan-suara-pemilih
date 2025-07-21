@@ -13,14 +13,18 @@ use Maatwebsite\Excel\Concerns\WithStartRow;
 
 class DataPemilihImport implements ToCollection, WithStartRow
 {
-    /**
-     * @param Collection $collection
-     */
     public function collection(Collection $collection)
     {
         foreach ($collection as $i => $a) {
-            if ($a[0] == null) {
+
+            if (empty($a[1]) || empty($a[3])) {
+                // Skip jika NIK kosong atau TPS kosong
                 continue;
+            }
+
+            // Cek apakah NIK sudah ada di tabel
+            if (DataPemilih::where('nik', $a[1])->exists()) {
+                continue; // Skip jika NIK sudah ada
             }
 
             $kecamatan = Kecamatan::firstOrCreate([
@@ -54,13 +58,13 @@ class DataPemilihImport implements ToCollection, WithStartRow
                 'korlap_id'     => $korlap->id,
                 'kormas_id'     => $kormas->id,
                 'no_hp'         => $a[11],
-                'user_id'       => Auth::user()->id
+                'user_id'       => Auth::id(),
             ]);
         }
     }
 
     public function startRow(): int
     {
-        return 2;
+        return 2; // Mulai dari baris kedua (lewati header)
     }
 }

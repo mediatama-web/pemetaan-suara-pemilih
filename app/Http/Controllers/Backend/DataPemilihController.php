@@ -52,7 +52,7 @@ class DataPemilihController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'no_kk' => 'required|numeric',
+            'no_kk' => 'nullable|numeric',
             'alamat' => 'required',
             'rw' => 'required',
             'rt' => 'required',
@@ -66,7 +66,6 @@ class DataPemilihController extends Controller
             'anggota.*.nik' => 'required|numeric|unique:data_pemilihs,nik',
             'anggota.*.nama' => 'required|string',
         ], [
-            'no_kk.required' => 'Nomor KK harus diisi.',
             'no_kk.numeric' => 'Nomor KK harus berupa angka.',
             'kelurahan_id.exists' => 'Kelurahan tidak ditemukan.',
             'kelurahan_id.required' => 'Kelurahan harus dipilih.',
@@ -116,7 +115,7 @@ class DataPemilihController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->validate([
-            'no_kk' => 'required|numeric',
+            'no_kk' => 'nullable|numeric',
             'nik' => 'required|unique:data_pemilihs,nik,' . $id,
             'nama' => 'required',
             'alamat' => 'required',
@@ -129,7 +128,6 @@ class DataPemilihController extends Controller
             'korlap_id' => 'nullable|exists:users,id',
             'kormas_id' => 'nullable|exists:users,id',
         ], [
-            'no_kk.required' => 'Nomor KK harus diisi.',
             'no_kk.numeric' => 'Nomor KK harus berupa angka.',
             'nik.required' => 'NIK harus diisi.',
             'nik.unique' => 'NIK sudah terdaftar.',
