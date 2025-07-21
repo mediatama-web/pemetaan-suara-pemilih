@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Backend;
 
+use App\Http\Controllers\Controller;
 use App\Imports\DataPemilihImport;
 use App\Models\DataPemilih;
 use App\Models\Kecamatan;
@@ -17,7 +18,9 @@ class DataPemilihController extends Controller
 {
     public function index()
     {
-        $data['datapemilih'] = DataPemilih::leftJoin('kelurahans', 'data_pemilihs.kelurahan_id', '=', 'kelurahans.id')
+        $user = Auth::user();
+
+        $query = DataPemilih::leftJoin('kelurahans', 'data_pemilihs.kelurahan_id', '=', 'kelurahans.id')
             ->leftJoin('kecamatans', 'data_pemilihs.kecamatan_id', '=', 'kecamatans.id')
             ->leftJoin('kor_lap_mas as korlap', 'data_pemilihs.korlap_id', '=', 'korlap.id')
             ->leftJoin('kor_lap_mas as kormas', 'data_pemilihs.kormas_id', '=', 'kormas.id')
@@ -27,8 +30,13 @@ class DataPemilihController extends Controller
                 'kecamatans.nama_kecamatan as nama_kecamatan',
                 'korlap.nama as nama_korlap',
                 'kormas.nama as nama_kormas'
-            )
-            ->get();
+            );
+
+        if ($user->role == 'admin') {
+            $query->where('data_pemilihs.user_id', $user->id);
+        }
+
+        $data['datapemilih'] = $query->get();
         return Inertia::render("Datapemilih/Index", $data);
     }
 

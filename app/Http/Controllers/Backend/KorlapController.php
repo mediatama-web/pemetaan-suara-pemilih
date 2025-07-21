@@ -1,22 +1,23 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Backend;
 
+use App\Http\Controllers\Controller;
 use App\Models\KorLapMas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 
-class KormasController extends Controller
+class KorlapController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $data['kormas'] = KorLapMas::where('status', 'kormas')->get();
-        return Inertia::render('Kormas/Index', $data);
+        $data['korlap'] = KorLapMas::where('status', 'korlap')->get();
+        return Inertia::render('Korlap/Index', $data);
     }
 
     /**
@@ -24,7 +25,7 @@ class KormasController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Kormas/Create/Index');
+        return Inertia::render('Korlap/Create/Index');
     }
 
     /**
@@ -54,10 +55,10 @@ class KormasController extends Controller
             ]);
 
             DB::commit();
-            return redirect()->route('kormas.index')->with('success', 'Data Berhasil Ditambahkan');
+            return redirect()->route('korlap.index')->with('success', 'Data Berhasil Ditambahkan');
         } catch (\Throwable $th) {
             DB::rollBack();
-            return redirect()->route('kormas.index')->with('error', 'Data Gagal Ditambahkan');
+            return redirect()->route('korlap.index')->with('error', 'Data Gagal Ditambahkan');
         }
     }
 
@@ -74,8 +75,8 @@ class KormasController extends Controller
      */
     public function edit(string $id)
     {
-        $data['kormas'] = KorLapMas::findOrFail($id);
-        return Inertia::render('Kormas/Edit/Index', $data);
+        $data['korlap'] = KorLapMas::findOrFail($id);
+        return Inertia::render('Korlap/Edit/Index', $data);
     }
 
     /**
@@ -105,10 +106,10 @@ class KormasController extends Controller
             ]);
             DB::commit();
 
-            return redirect()->route('kormas.index')->with('success', 'Data Berhasil Diubah');
+            return redirect()->route('korlap.index')->with('success', 'Data Berhasil Diubah');
         } catch (\Throwable $th) {
             DB::rollBack();
-            return redirect()->route('kormas.index')->with('error', 'Data Gagal Diubah');
+            return redirect()->route('korlap.index')->with('error', 'Data Gagal Diubah');
         }
     }
 
@@ -121,9 +122,9 @@ class KormasController extends Controller
             $data = KorLapMas::findOrFail($id);
             $data->delete();
 
-            return redirect()->route('kormas.index')->with('success', 'Data Pemilih berhasil dihapus.');
+            return redirect()->route('korlap.index')->with('success', 'Data Pemilih berhasil dihapus.');
         } catch (\Throwable $th) {
-            return redirect()->route('kormas.index')->with('error', 'Data Pemilih gagal dihapus.');
+            return redirect()->route('korlap.index')->with('error', 'Data Pemilih gagal dihapus.');
         }
     }
 }

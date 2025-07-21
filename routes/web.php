@@ -1,15 +1,17 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{
+use App\Http\Controllers\Backend\{
     AnggotaDewanController,
-    AuthController,
     DashboardController,
     DataPemilihController,
     KecamatanController,
+    KegiatanController,
     KelurahanController,
     KorlapController,
     KormasController,
+    LaporanPemilihController,
     UserController,
 };
 
@@ -20,6 +22,8 @@ Route::group(['middleware' => 'guest'], function () {
 
 Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::resource('dashboard', DashboardController::class);
+    // kegiatan
+    Route::resource('kegiatan', KegiatanController::class);
     // kecamatan
     Route::resource('kecamatan', KecamatanController::class);
     // kelurahan
@@ -31,6 +35,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     // data pemilih
     Route::resource('datapemilih', DataPemilihController::class);
     Route::post('datapemilih.import', [DataPemilihController::class, 'importExcel'])->name('datapemilih.import');
+    // laporan pemilih
+    Route::resource('laporanpemilih', LaporanPemilihController::class);
     // data kormas
     Route::resource('kormas', KormasController::class);
     // data korlap

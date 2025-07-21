@@ -34,6 +34,31 @@ export interface Kelurahan {
     updated_at: string;
 }
 
+export type StatistikProps = {
+  total_pemilih: number;
+  total_kecamatan: number;
+  total_kelurahan: number;
+}
+
+export type StatItem = {
+  label: string;
+  total: number;
+};
+
+export type Chart = {
+    kecamatan : StatItem[]
+    kelurahan : StatItem[]
+}
+
+export type LaporanProps = {
+  data: any[];
+  filters: any;
+  anggotaDewans: { id: number; nama: string }[];
+  kecamatans: Kecamatan[];
+  statistik: StatistikProps;
+  chart: Chart;
+};
+
 export interface Datapemilih {
     id: number;
     no_kk: number;
@@ -70,3 +95,19 @@ export type AnggotaDewan = {
     created_at: string;
     updated_at: string;
 } 
+
+export type Kegiatan = {
+    id: number;
+    user_id: number;
+    nama_kegiatan: string;
+    tanggal_mulai: string;
+    tanggal_akhir: string;
+    kecamatan_id: number;
+    kelurahan_id: number;
+    rw: string;
+    rt: string;
+    kelurahan: Kelurahan;
+    kecamatan: Kecamatan;
+    created_at: string;
+    updated_at: string;
+}

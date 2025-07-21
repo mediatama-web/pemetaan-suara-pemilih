@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Backend;
 
+use App\Http\Controllers\Controller;
 use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use Illuminate\Http\Request;
@@ -75,5 +76,16 @@ class KelurahanController extends Controller
     {
         $kelurahan->delete();
         return redirect()->route('kelurahan.index')->with('success', 'Kelurahan deleted successfully.');
+    }
+
+    // API
+    public function getByKecamatan($kecamatanId)
+    {
+        $kelurahans = Kelurahan::where('kecamatan_id', $kecamatanId)
+            ->select('id', 'nama_kelurahan')
+            ->orderBy('nama_kelurahan')
+            ->get();
+
+        return response()->json($kelurahans);
     }
 }

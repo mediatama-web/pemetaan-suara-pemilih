@@ -1,7 +1,7 @@
 import { AppSidebar } from "@/Components/app-sidebar";
 import { SiteHeader } from "@/Components/site-header";
 import { SidebarInset, SidebarProvider } from "@/Components/ui/sidebar";
-import { usePage } from "@inertiajs/react";
+import { Head, usePage } from "@inertiajs/react";
 import { useEffect } from "react";
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -22,6 +22,7 @@ export default function Template({children, title}: {children: React.ReactNode, 
     }, [flash.success, flash.error]);
     return (
       <SidebarProvider>
+        <Head title={title} />
         <Toaster />
         <AppSidebar variant="inset" />
         <SidebarInset>

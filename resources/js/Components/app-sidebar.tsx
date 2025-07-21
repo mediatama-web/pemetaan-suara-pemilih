@@ -1,6 +1,7 @@
 import {
   ArrowUpCircleIcon,
-  GiftIcon,
+  Box,
+  Dock,
   IdCard,
   LayoutDashboardIcon,
   MapPinned,
@@ -49,9 +50,21 @@ const data = {
       role: ["superadmin", "admin"],
     },
     {
-      title: "Bantuan",
+      title: "Kegiatan",
+      url: "/kegiatan",
+      icon: Box,
+      role: ["superadmin", "admin"],
+    },
+    {
+      title: "Laporan Data Pemilih",
+      url: "/laporanpemilih",
+      icon: Dock,
+      role: ["superadmin", "admin"],
+    },
+    {
+      title: "Laporan Kegiatan",
       url: "#",
-      icon: GiftIcon,
+      icon: Dock,
       role: ["superadmin", "admin"],
     },
     {

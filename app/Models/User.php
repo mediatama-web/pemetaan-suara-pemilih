@@ -51,6 +51,16 @@ class User extends Authenticatable
 
     public function anggotaDewan()
     {
-        return $this->belongsTo(AnggotaDewan::class, 'anggota_dewan_id');
+        return $this->belongsTo(AnggotaDewan::class);
+    }
+
+    public function kecamatan()
+    {
+        return $this->belongsTo(Kecamatan::class);
+    }
+
+    public function kelurahan()
+    {
+        return $this->belongsTo(Kelurahan::class);
     }
 }
