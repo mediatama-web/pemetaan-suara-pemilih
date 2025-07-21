@@ -12,7 +12,6 @@ import {
 } from "@tanstack/react-table"
 
 import { Button } from "@/Components/ui/button"
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "@/Components/ui/dropdown-menu"
 import { Input } from "@/Components/ui/input"
 import {
     Table,
@@ -23,7 +22,7 @@ import {
     TableRow,
 } from "@/Components/ui/table"
 import { Link } from "@inertiajs/react"
-import { LucideEyeOff, Plus } from "lucide-react"
+import { Plus } from "lucide-react"
 import { useState } from "react"
 
 interface DataTableProps<TData, TValue> {
