@@ -31,7 +31,7 @@ class LaporanKegiatanController extends Controller
             ]);
 
         // Filter berdasarkan role
-        if ($user->role !== 'super_admin') {
+        if ($user->role !== 'superadmin') {
             $query->whereHas(
                 'user',
                 fn($q) =>
