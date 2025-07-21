@@ -5,7 +5,9 @@ import KegiatanForm from "../Form";
 
 export default function Create({kecamatans}: {kecamatans: Kecamatan[]}) {
     const fetchKelurahans = async (kecamatanId: number | string) => {
-        const response = await axios.get(`/api/kelurahans/${kecamatanId}`);
+        const response = await axios.get(route('api.kelurahan'), {
+                params: { kecamatan_id: kecamatanId },
+            })
         return response.data;
     };
     return (

@@ -1,6 +1,6 @@
 import {
-  ArrowUpCircleIcon,
   Box,
+  Database,
   Dock,
   IdCard,
   LayoutDashboardIcon,
@@ -63,7 +63,7 @@ const data = {
     },
     {
       title: "Laporan Kegiatan",
-      url: "#",
+      url: "/laporankegiatan",
       icon: Dock,
       role: ["superadmin", "admin"],
     },
@@ -107,8 +107,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
               <a href="#">
-                <ArrowUpCircleIcon className="h-5 w-5" />
-                <span className="text-base font-semibold">PENDATAAN</span>
+                <Database className="h-5 w-5" />
+                <span className="text-base font-semibold">DATABASE</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>

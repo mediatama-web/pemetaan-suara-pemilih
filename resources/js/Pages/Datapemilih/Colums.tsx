@@ -1,6 +1,7 @@
 import { Button } from "@/Components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/Components/ui/dropdown-menu"
 import { Datapemilih } from "@/types"
+import { router } from "@inertiajs/react"
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, MoreVerticalIcon } from "lucide-react"
 import Swal from 'sweetalert2'
@@ -10,21 +11,21 @@ export const columns: ColumnDef<Datapemilih>[] = [
       header: "No",
       cell: ({ row }) => <span className="font-medium">{row.index + 1}</span>,
     },
-    {
-      accessorKey: "no_kk",
-      header: ({ column }) => {
-        return (
-            <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-            >
-            No KK
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-            </Button>
-        )
-      },
-      cell: ({ row }) => <span className="font-medium">{row.getValue("no_kk")}</span>,
-    },
+    // {
+    //   accessorKey: "no_kk",
+    //   header: ({ column }) => {
+    //     return (
+    //         <Button
+    //         variant="ghost"
+    //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+    //         >
+    //         No KK
+    //         <ArrowUpDown className="ml-2 h-4 w-4" />
+    //         </Button>
+    //     )
+    //   },
+    //   cell: ({ row }) => <span className="font-medium">{row.getValue("no_kk")}</span>,
+    // },
     {
       accessorKey: "nik",
       header: ({ column }) => {
@@ -189,7 +190,7 @@ export const columns: ColumnDef<Datapemilih>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => EditData(data.id)}>Edit</DropdownMenuItem>
+            {/* <DropdownMenuItem onClick={() => EditData(data.id)}>Edit</DropdownMenuItem> */}
             <DropdownMenuItem onClick={() => hapusData(data.id)}>Hapus</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -217,7 +218,7 @@ export const hapusData = (id : number) => {
     reverseButtons: true
   }).then((result) => {
     if (result.isConfirmed) {
-        console.log("berhasil");
+        router.delete(route('datapemilih.destroy', id))
     }
   });
 }
@@ -241,7 +242,7 @@ const EditData = (id : number) => {
         reverseButtons: true
     }).then((result) => {
         if (result.isConfirmed) {
-            console.log("berhasil");
+            router.get(route('datapemilih.edit', id))
         }
     })
 }

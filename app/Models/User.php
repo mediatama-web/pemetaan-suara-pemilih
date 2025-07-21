@@ -63,4 +63,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Kelurahan::class);
     }
+
+    public function kegiatan()
+    {
+        return $this->hasMany(Kegiatan::class);
+    }
 }

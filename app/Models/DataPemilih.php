@@ -37,4 +37,14 @@ class DataPemilih extends Model
     {
         return $this->belongsTo(Kecamatan::class, 'kecamatan_id');
     }
+
+    public function absens()
+    {
+        return $this->hasMany(AbsenKegiatan::class, 'nik', 'nik');
+    }
+
+    public function anggotaDewan()
+    {
+        return $this->belongsTo(User::class, 'anggota_dewan_id');
+    }
 }

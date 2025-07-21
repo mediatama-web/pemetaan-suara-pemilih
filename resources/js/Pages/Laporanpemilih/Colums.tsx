@@ -76,7 +76,7 @@ export const columns: ColumnDef<any>[] = [
       cell: ({ row }) => {
         const data = row.original
         return (
-          <span className="font-medium">{data.kelurahan?.nama_kelurahan || '-'}</span>
+          <span className="font-medium">{data.kelurahan?.nama_kelurahan|| '-'}</span>
         )
       },
     },

@@ -190,6 +190,7 @@ export const columns: ColumnDef<Kegiatan>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={() => EnryData(data.id)}>Entry Data</DropdownMenuItem>
             <DropdownMenuItem onClick={() => EditData(data.id)}>Edit</DropdownMenuItem>
             <DropdownMenuItem onClick={() => hapusData(data.id)}>Hapus</DropdownMenuItem>
           </DropdownMenuContent>
@@ -218,7 +219,7 @@ export const hapusData = (id : number) => {
     reverseButtons: true
   }).then((result) => {
     if (result.isConfirmed) {
-        router.delete(route('kecamatan.destroy', id), {
+        router.delete(route('kegiatan.destroy', id), {
             preserveScroll: true,
         });
     }
@@ -244,9 +245,13 @@ const EditData = (id : number) => {
         reverseButtons: true
     }).then((result) => {
         if (result.isConfirmed) {
-            router.get(route('kecamatan.edit', id), {
+            router.get(route('kegiatan.edit', id), {
                 preserveScroll: true,
             });
         }
     })
+}
+
+const EnryData = (id : number) => {
+    router.get(route('kegiatan.absen', id));
 }

@@ -11,6 +11,7 @@ use App\Http\Controllers\Backend\{
     KelurahanController,
     KorlapController,
     KormasController,
+    LaporanKegiatanController,
     LaporanPemilihController,
     UserController,
 };
@@ -24,6 +25,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::resource('dashboard', DashboardController::class);
     // kegiatan
     Route::resource('kegiatan', KegiatanController::class);
+    Route::get('kegiatan/{kegiatan}/absen', [KegiatanController::class, 'createAbsen'])->name('kegiatan.absen');
+    Route::post('kegiatan.absen', [KegiatanController::class, 'storeAbsen'])->name('kegiatan.absen.store');
     // kecamatan
     Route::resource('kecamatan', KecamatanController::class);
     // kelurahan
@@ -37,6 +40,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::post('datapemilih.import', [DataPemilihController::class, 'importExcel'])->name('datapemilih.import');
     // laporan pemilih
     Route::resource('laporanpemilih', LaporanPemilihController::class);
+    // laporan kegiatan
+    Route::resource('laporankegiatan', LaporanKegiatanController::class);
     // data kormas
     Route::resource('kormas', KormasController::class);
     // data korlap

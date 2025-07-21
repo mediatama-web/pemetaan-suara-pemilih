@@ -34,4 +34,9 @@ class Kegiatan extends Model
     {
         return $this->belongsTo(Kelurahan::class);
     }
+
+    public function absens()
+    {
+        return $this->hasMany(AbsenKegiatan::class);
+    }
 }

@@ -14,9 +14,9 @@ export default function Index({
   return (
     <Template title="Dashboard">
       <SectionCards kecamatan={kecamatan} kelurahan={kelurahan} jumlahPemilih={jumlahPemilih} />
-      <div className="px-4 lg:px-6">
+      {/* <div className="px-4 lg:px-6">
         <ChartAreaInteractive />
-      </div>
+      </div> */}
     </Template>
   )
 }

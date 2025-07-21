@@ -127,11 +127,11 @@ export default function Index({
                 total_kelurahan={statistik.total_kelurahan}
                 />
 
-                {/* Tabel Hasil */}
-                <DataTable columns={columns} data={data} />
-
                 {/* chart */}
                 <StatistikChartCard chart={chart} />
+
+                {/* Tabel Hasil */}
+                <DataTable columns={columns} data={data} />
 
             </div>
         </Template>

@@ -64,35 +64,38 @@ export function DataTable<TData, TValue>({
         <div className="flex justify-between gap-3 items-center py-4">
             <Link href="/datapemilih/create" className="flex items-center gap-3 p-2 bg-gray-800 text-white rounded-lg md:text-md text-xs md:w-32 text-center"><Plus /><span className="hidden md:block">Tambah</span></Link>
             {/*  */}
-            <Input placeholder="Cari..." value={(table.getColumn("no_kk")?.getFilterValue() as string) ?? ""} onChange={(event) => table.getColumn("no_kk")?.setFilterValue(event.target.value)} className="max-w-xs"/>
-            <DropdownMenu>
+            <Input placeholder="Cari..." value={(table.getColumn("nik")?.getFilterValue() as string) ?? ""} onChange={(event) => table.getColumn("nik")?.setFilterValue(event.target.value)} className="max-w-xs"/>
+            {/* <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button variant="outline" className="ml-auto">
                         <LucideEyeOff className="mr-2 h-4 w-4" />
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                    {table
-                    .getAllColumns()
-                    .filter(
-                        (column) => column.getCanHide()
-                    )
-                    .map((column) => {
-                        return (
-                        <DropdownMenuCheckboxItem
-                            key={column.id}
-                            className="capitalize"
-                            checked={column.getIsVisible()}
-                            onCheckedChange={(value) =>
-                            column.toggleVisibility(!!value)
-                            }
-                        >
-                            {column.id}
-                        </DropdownMenuCheckboxItem>
-                        )
-                    })}
+                    {
+                        table
+                        .getAllColumns()
+                        .filter(
+                            (column) => column.getCanHide()
+                        ).map((column) => {
+                            console.log(column);
+                            
+                            return (
+                            <DropdownMenuCheckboxItem
+                                key={column.id}
+                                className="capitalize"
+                                checked={column.getIsVisible()}
+                                onCheckedChange={(value) =>
+                                column.toggleVisibility(!!value)
+                                }
+                            >
+                                {column.id}
+                            </DropdownMenuCheckboxItem>
+                            )
+                        })
+                    }
                 </DropdownMenuContent>
-            </DropdownMenu>
+            </DropdownMenu> */}
         </div>
         {/*  */}
         <div className="rounded-md border">

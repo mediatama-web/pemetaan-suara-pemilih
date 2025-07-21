@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('data_pemilihs', function (Blueprint $table) {
             $table->id();
             $table->string("no_kk");
-            $table->string("nik");
+            $table->string("nik")->unique();
             $table->string("nama");
             $table->text("alamat")->nullable();
             $table->string("rt")->nullable();
