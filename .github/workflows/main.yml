@@ -16,17 +16,7 @@ jobs:
         uses: actions/checkout@v4
 
       # 🔥 Hapus isi folder public/build di server
-      - name: Remove old build via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-        with:
-          host: ${{ secrets.SECRET_HOST }}
-          user: ${{ secrets.SECRET_USERNAME }}
-          password: ${{ secrets.SECRET_PASSWORD }}
-          port: 21
-          command: delete -r public/build
-
-      # 🚀 Upload build baru ke server (folder public/build saja)
-      - name: Upload new build
+      - name: Deploy build folder, bersihkan dulu folder lama
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.SECRET_HOST }}
@@ -35,6 +25,7 @@ jobs:
           port: 21
           local-dir: ./public/build/
           server-dir: public/build/
+          dangerous-clean-slate: true
 
       # 🛠️ Setup file .env (opsional, untuk pertama kali)
       - name: Create .env if not exists
