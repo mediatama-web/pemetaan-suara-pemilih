@@ -111,3 +111,16 @@ export type Kegiatan = {
     created_at: string;
     updated_at: string;
 }
+
+export type Proposal = {
+    id : number;
+    user_id : number;
+    user : User;
+    nama_penanggung_jawab : string;
+    tanggal_masuk : string;
+    judul_proposal : string;
+    file_proposal : string;
+    status : string;
+    created_at : string;
+    updated_at : string;
+}

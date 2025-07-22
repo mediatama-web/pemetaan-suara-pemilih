@@ -140,42 +140,42 @@ export const columns: ColumnDef<Kegiatan>[] = [
       cell: ({ row }) => <span className="font-medium">{row.getValue("rt")}</span>,
     },
     {
-    accessorKey: "status",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Status Kegiatan
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
+      accessorKey: "status",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Status Kegiatan
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      },
+      cell: ({ row }) => {
+        const data = row.original;
+
+        const today = new Date();
+        const startDate = parseISO(data.tanggal_mulai);
+        const endDate = parseISO(data.tanggal_akhir);
+
+        let status = "";
+        let textColor = "";
+
+        if (isBefore(today, startDate)) {
+          status = "Belum Berjalan";
+          textColor = "text-yellow-500";
+        } else if (isWithinInterval(today, { start: startDate, end: endDate })) {
+          status = "Sedang Berjalan";
+          textColor = "text-green-600";
+        } else if (isAfter(today, endDate)) {
+          status = "Telah Berakhir";
+          textColor = "text-red-500";
+        }
+
+        return <span className={`font-semibold ${textColor}`}>{status}</span>;
+      },
     },
-    cell: ({ row }) => {
-      const data = row.original;
-
-      const today = new Date();
-      const startDate = parseISO(data.tanggal_mulai);
-      const endDate = parseISO(data.tanggal_akhir);
-
-      let status = "";
-      let textColor = "";
-
-      if (isBefore(today, startDate)) {
-        status = "Belum Berjalan";
-        textColor = "text-yellow-500";
-      } else if (isWithinInterval(today, { start: startDate, end: endDate })) {
-        status = "Sedang Berjalan";
-        textColor = "text-green-600";
-      } else if (isAfter(today, endDate)) {
-        status = "Telah Berakhir";
-        textColor = "text-red-500";
-      }
-
-      return <span className={`font-semibold ${textColor}`}>{status}</span>;
-    },
-  },
     {
       header: "Actions",
       cell: ({ row }) => {

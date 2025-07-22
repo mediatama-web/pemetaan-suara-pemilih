@@ -2,6 +2,7 @@ import {
   Box,
   Database,
   Dock,
+  File,
   IdCard,
   LayoutDashboardIcon,
   MapPinned,
@@ -42,6 +43,12 @@ const data = {
       url: "/kelurahan",
       icon: MapPinned  ,
       role: ["superadmin"],
+    },
+    {
+      title: "Proposal",
+      url: "/proposal",
+      icon: File,
+      role: ["superadmin", "admin"],
     },
     {
       title: "Data Pemilih",

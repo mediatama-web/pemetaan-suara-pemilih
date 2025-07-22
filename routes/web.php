@@ -13,6 +13,7 @@ use App\Http\Controllers\Backend\{
     KormasController,
     LaporanKegiatanController,
     LaporanPemilihController,
+    ProposalController,
     UserController,
 };
 
@@ -42,6 +43,10 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::resource('laporanpemilih', LaporanPemilihController::class);
     // laporan kegiatan
     Route::resource('laporankegiatan', LaporanKegiatanController::class);
+    // proposal masuk
+    Route::resource('proposal', ProposalController::class);
+    Route::patch('/proposal/{proposal}/status', [ProposalController::class, 'updateStatus'])
+        ->name('proposal.update-status');
     // data kormas
     Route::resource('kormas', KormasController::class);
     // data korlap

@@ -23,8 +23,9 @@ export default function Edit({kecamatans, kegiatan}: {kecamatans: Kecamatan[] , 
                     rw: kegiatan.rw,
                     rt: kegiatan.rt,
                 }}
-                submitUrl={route('kegiatan.store')}
+                submitUrl={route('kegiatan.update', kegiatan.id)}
                 kecamatans={kecamatans}
+                method="put"
                 kelurahansByKecamatan={fetchKelurahans}
                 />
             </div>
