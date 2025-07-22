@@ -22,6 +22,7 @@ jobs:
           host: ${{ secrets.SECRET_HOST }}
           user: ${{ secrets.SECRET_USERNAME }}
           password: ${{ secrets.SECRET_PASSWORD }}
+          port: 21
           command: delete -r public/build
 
       # 🚀 Upload build baru ke server (folder public/build saja)
@@ -34,7 +35,6 @@ jobs:
           port: 21
           local-dir: ./public/build/
           server-dir: public/build/
-          dangerous-clean-slate: false # sudah kita hapus manual di langkah sebelumnya
 
       # 🛠️ Setup file .env (opsional, untuk pertama kali)
       - name: Create .env if not exists
