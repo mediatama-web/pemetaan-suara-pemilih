@@ -17,7 +17,7 @@ jobs:
 
       # 🔥 Hapus isi folder public/build di server
       - name: Remove old build via FTP
-        uses: sebastianpopp/ftp-action@v1.2.0
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           host: ${{ secrets.SECRET_HOST }}
           user: ${{ secrets.SECRET_USERNAME }}
