@@ -1,4 +1,4 @@
-name: pemetaan-suara-pemilih
+name: Deploy Laravel Build to Server
 
 on:
   push:
@@ -11,29 +11,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      # Checkout repository
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      # Hapus build lama di server
-      - name: Remove old build on server via FTP
-        uses: sebastianpopp/ftp-action@releases/v3
+      # 🔥 Hapus isi folder public/build di server
+      - name: Remove old build via FTP
+        uses: sebastianpopp/ftp-action@v1.2.0
         with:
           host: ${{ secrets.SECRET_HOST }}
           user: ${{ secrets.SECRET_USERNAME }}
           password: ${{ secrets.SECRET_PASSWORD }}
           command: delete -r public/build
 
-      # Upload semua file ke server (termasuk public/build baru)
-      - name: Deploy to FTP server
+      # 🚀 Upload build baru ke server (folder public/build saja)
+      - name: Upload new build
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.SECRET_HOST }}
           username: ${{ secrets.SECRET_USERNAME }}
           password: ${{ secrets.SECRET_PASSWORD }}
           port: 21
-          local-dir: ./ # pastikan build sudah ada di public/build
-          server-dir: ./ # direktori root FTP server
+          local-dir: ./public/build/
+          server-dir: public/build/
+          dangerous-clean-slate: false # sudah kita hapus manual di langkah sebelumnya
 
-      # Optional: langkah-langkah tambahan (jika dibutuhkan di server)
+      # 🛠️ Setup file .env (opsional, untuk pertama kali)
       - name: Create .env if not exists
         run: |
           if [ ! -f .env ]; then
@@ -43,6 +46,7 @@ jobs:
             echo ".env already exists"
           fi
 
+      # 🔐 Siapkan koneksi SSH (jika ingin remote command)
       - name: Setup SSH for remote command
         run: |
           mkdir -p ~/.ssh
@@ -50,11 +54,11 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.SECRET_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Install Dependencies
-        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-
-      - name: Generate Key
-        run: php artisan key:generate
-
-      - name: Set Permissions
-        run: chmod -R 777 storage bootstrap/cache
+      # 🧱 (Opsional) Jalankan command Laravel via SSH (jika server mendukung)
+      # - name: Run Artisan Commands Remotely
+      #   run: |
+      #     ssh -i ~/.ssh/id_rsa user@${{ secrets.SECRET_HOST }} << 'EOF'
+      #       cd /path/to/your/project
+      #       php artisan config:cache
+      #       php artisan view:cache
+      #     EOF
