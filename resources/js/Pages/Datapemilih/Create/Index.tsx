@@ -5,7 +5,7 @@ import { Input } from "@/Components/ui/input";
 import { Separator } from "@/Components/ui/separator";
 import UploadFile from "@/Components/UploadFile";
 import Template from "@/Layouts/Template";
-import { Link, useForm } from "@inertiajs/react";
+import { Link, useForm, usePage } from "@inertiajs/react";
 import { ArrowLeft, HardDriveDownloadIcon, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -258,6 +258,9 @@ export default function Create({kecamatans, kelurahans, korlaps, kormas} : {
 }
 
 const UploadExcel = ({children} : {children: React.ReactNode}) => {
+    const {props} = usePage()
+    console.log(props);
+    
     const { data, setData, post, processing, errors } = useForm<{file: File | null}>({
         file: null
     })

@@ -11,6 +11,7 @@ use App\Models\KorLapMas;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -60,8 +61,6 @@ class DataPemilihController extends Controller
             'no_hp' => 'nullable|numeric|min:11',
             'kelurahan_id' => 'required|exists:kelurahans,id',
             'kecamatan_id' => 'required|exists:kecamatans,id',
-            'korlap_id' => 'required',
-            'kormas_id' => 'required',
             'anggota' => 'required|array',
             'anggota.*.nik' => 'required|numeric|unique:data_pemilihs,nik',
             'anggota.*.nama' => 'required|string',
@@ -71,8 +70,6 @@ class DataPemilihController extends Controller
             'kelurahan_id.required' => 'Kelurahan harus dipilih.',
             'kecamatan_id.exists' => 'Kecamatan tidak ditemukan.',
             'kecamatan_id.required' => 'Kecamatan harus dipilih.',
-            'korlap_id.required' => 'Koordinator Lapangan tidak boleh kosong.',
-            'kormas_id.required' => 'Koordinator Masyarakat tidak boleh kosong.',
             'no_hp.min' => 'Nomor HP harus minimal 11 digit.',
             'rw.required' => 'RW harus diisi.',
             'rt.required' => 'RT harus diisi.',
@@ -125,8 +122,6 @@ class DataPemilihController extends Controller
             'no_hp' => 'required|numeric|min:11',
             'kelurahan_id' => 'required|exists:kelurahans,id',
             'kecamatan_id' => 'required|exists:kecamatans,id',
-            'korlap_id' => 'nullable|exists:users,id',
-            'kormas_id' => 'nullable|exists:users,id',
         ], [
             'no_kk.numeric' => 'Nomor KK harus berupa angka.',
             'nik.required' => 'NIK harus diisi.',
@@ -136,8 +131,6 @@ class DataPemilihController extends Controller
             'kelurahan_id.required' => 'Kelurahan harus dipilih.',
             'kecamatan_id.exists' => 'Kecamatan tidak ditemukan.',
             'kecamatan_id.required' => 'Kecamatan harus dipilih.',
-            'korlap_id.exists' => 'Koordinator Lapangan tidak ditemukan.',
-            'kormas_id.exists' => 'Koordinator Masyarakat tidak ditemukan.',
             'no_hp.min' => 'Nomor HP harus minimal 11 digit.',
             'rw.required' => 'RW harus diisi.',
             'rt.required' => 'RT harus diisi.',
@@ -178,13 +171,24 @@ class DataPemilihController extends Controller
 
     public function importExcel(Request $request)
     {
-        $file = $request->file('file');
-        $import = Excel::import(new DataPemilihImport, $file, \Maatwebsite\Excel\Excel::XLSX);
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls'
+        ]);
+        try {
+            $file = $request->file('file');
 
-        if (!$import) {
-            return redirect()->route('datapemilih.index')->with('error', 'Data Pemilih gagal diimport.');
+            ini_set('memory_limit', '512M');
+            set_time_limit(300); // 5 menit
+
+            Excel::import(new DataPemilihImport, $request->file('file'));
+            
+            // Excel::import(new DataPemilihImport, $file, \Maatwebsite\Excel\Excel::XLSX);
+
+            return redirect()->route('datapemilih.index')->with('success', 'Data Pemilih berhasil diimport.');
+        } catch (\Exception $e) {
+            Log::error('Import Excel error: ' . $e->getMessage());
+
+            return redirect()->route('datapemilih.index')->with('error', 'Terjadi kesalahan saat mengimpor data: ' . $e->getMessage());
         }
-
-        return redirect()->route('datapemilih.index')->with('success', 'Data Pemilih berhasil diimport.');
     }
 }

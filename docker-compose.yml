@@ -1,0 +1,79 @@
+services:
+  app:
+    image: gemafajar04/myphp:8.3
+    container_name: suaragolkar
+    working_dir: /var/www
+    command: >
+      sh -c "
+        chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache &&
+        php-fpm"
+    volumes:
+      - ./:/var/www
+    expose:
+      - 9000
+    networks:
+      - laravel
+  
+  webserver:
+    image: gemafajar04/nginx-laravel:latest
+    container_name: nginx_server
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www
+    depends_on:
+      - app
+    networks:
+      - laravel
+  
+  node:
+    image: node:20-alpine
+    container_name: node_container
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    ports:
+      - "5173:5173"
+    command: sh -c "npm install && npm run dev -- --host"
+    networks:
+      - laravel
+
+  db:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: unless-stopped
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: suaragolkar
+      MYSQL_USER: suaragolkar
+      MYSQL_PASSWORD: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    init: true
+    volumes:
+      - dbdata:/var/lib/mysql
+      - /home/gemafajar/Downloads:/mnt/downloads
+    networks:
+      - laravel
+
+  adminer:
+    image: adminer
+    container_name: adminer_ui
+    restart: unless-stopped
+    ports:
+      - "8081:8080"
+    networks:
+      - laravel
+
+volumes:
+  dbdata:
+
+networks:
+  laravel:
+    driver: bridge
