@@ -52,18 +52,10 @@ class KegiatanController extends Controller
             'kecamatan_id' => 'required',
             'kelurahan_id' => 'required',
             'nama_kegiatan' => 'required',
-            'tanggal_mulai' => 'required',
-            'tanggal_akhir' => 'required',
-            'rt' => 'required',
-            'rw' => 'required',
         ], [
             'kecamatan_id.required' => 'Kecamatan harus dipilih.',
             'kelurahan_id.required' => 'Kelurahan harus dipilih.',
             'nama_kegiatan.required' => 'Kegiatan harus diisi.',
-            'tanggal_mulai.required' => 'Tanggal mulai harus diisi.',
-            'tanggal_akhir.required' => 'Tanggal selesai harus diisi.',
-            'rt.required' => 'RT harus diisi.',
-            'rw.required' => 'RW harus diisi.',
         ]);
 
         if ($validator->fails()) {

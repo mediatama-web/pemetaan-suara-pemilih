@@ -7,11 +7,11 @@ import {
     getPaginationRowModel,
     getSortedRowModel,
     SortingState,
-    useReactTable,
-    VisibilityState,
+    useReactTable
 } from "@tanstack/react-table"
 
 import { Button } from "@/Components/ui/button"
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent } from "@/Components/ui/dropdown-menu"
 import { Input } from "@/Components/ui/input"
 import {
     Table,
@@ -30,6 +30,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[]
 }
 
+
 export function DataTable<TData, TValue>({
   columns,
   data,
@@ -37,7 +38,8 @@ export function DataTable<TData, TValue>({
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
     const [rowSelection, setRowSelection] = useState({})
-    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+    const [globalFilter, setGlobalFilter] = useState("");
+    // const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
 
   const table = useReactTable({
     data,
@@ -48,13 +50,13 @@ export function DataTable<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
+    onGlobalFilterChange: setGlobalFilter,
     onRowSelectionChange: setRowSelection,
-    onColumnVisibilityChange: setColumnVisibility,
     state: {
-      sorting,
-      columnFilters,
-      rowSelection,
-      columnVisibility
+        sorting,
+        columnFilters,
+        rowSelection,
+        globalFilter,
     },
   })
 
@@ -63,38 +65,36 @@ export function DataTable<TData, TValue>({
         <div className="flex justify-between gap-3 items-center py-4">
             <Link href="/datapemilih/create" className="flex items-center gap-3 p-2 bg-gray-800 text-white rounded-lg md:text-md text-xs md:w-32 text-center"><Plus /><span className="hidden md:block">Tambah</span></Link>
             {/*  */}
-            <Input placeholder="Cari..." value={(table.getColumn("nik")?.getFilterValue() as string) ?? ""} onChange={(event) => table.getColumn("nik")?.setFilterValue(event.target.value)} className="max-w-xs"/>
-            {/* <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                    <Button variant="outline" className="ml-auto">
-                        <LucideEyeOff className="mr-2 h-4 w-4" />
-                    </Button>
-                </DropdownMenuTrigger>
+            <Input
+            placeholder="Cari..."
+            value={globalFilter ?? ""}
+            onChange={(e) => setGlobalFilter(e.target.value)}
+            className="max-w-xs"
+            />
+
+            <DropdownMenu>
                 <DropdownMenuContent align="end">
-                    {
-                        table
-                        .getAllColumns()
-                        .filter(
-                            (column) => column.getCanHide()
-                        ).map((column) => {
-                            console.log(column);
-                            
-                            return (
-                            <DropdownMenuCheckboxItem
-                                key={column.id}
-                                className="capitalize"
-                                checked={column.getIsVisible()}
-                                onCheckedChange={(value) =>
-                                column.toggleVisibility(!!value)
-                                }
-                            >
-                                {column.id}
-                            </DropdownMenuCheckboxItem>
-                            )
-                        })
-                    }
+                    {table
+                    .getAllColumns()
+                    .filter(
+                        (column) => column.getCanHide()
+                    )
+                    .map((column) => {
+                        return (
+                        <DropdownMenuCheckboxItem
+                            key={column.id}
+                            className="capitalize"
+                            checked={column.getIsVisible()}
+                            onCheckedChange={(value) =>
+                            column.toggleVisibility(!!value)
+                            }
+                        >
+                            {column.id}
+                        </DropdownMenuCheckboxItem>
+                        )
+                    })}
                 </DropdownMenuContent>
-            </DropdownMenu> */}
+            </DropdownMenu>
         </div>
         {/*  */}
         <div className="rounded-md border">

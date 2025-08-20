@@ -4,10 +4,10 @@ import { Pie } from 'react-chartjs-2'; // atau ganti dengan formatter kamu
 import FilterForm from './Component/FilterForm';
 
 import {
-    ArcElement,
-    Chart as ChartJS,
-    Legend,
-    Tooltip,
+  ArcElement,
+  Chart as ChartJS,
+  Legend,
+  Tooltip,
 } from 'chart.js';
 
 ChartJS.register(ArcElement, Tooltip, Legend)
@@ -29,7 +29,7 @@ interface Props {
   }
 }
 
-const Index = ({ kegiatanList, kecamatans, kelurahans, filters }: Props) => {
+const Index = ({ kegiatanList, kecamatans, kelurahans, filters }: Props) => {  
   return (
     <Template title="Laporan Kegiatan">
         <div className="container mx-auto p-3">

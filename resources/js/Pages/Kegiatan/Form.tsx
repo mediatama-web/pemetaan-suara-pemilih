@@ -147,7 +147,6 @@ const KegiatanForm: React.FC<KegiatanFormProps> = ({
         </div>
       </div>
 
-
       <button
         type="submit"
         disabled={processing}

@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Models\DataPemilih;
 use App\Models\Kecamatan;
+use App\Models\Kegiatan;
 use App\Models\Kelurahan;
+use App\Models\Proposal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -28,6 +30,8 @@ class DashboardController extends Controller
 
         $data['kecamatan'] = Kecamatan::count();
         $data['kelurahan'] = Kelurahan::count();
+        $data['proposal'] = Proposal::count();
+        $data['kegiatan'] = Kegiatan::count();
 
         $data['jumlahPemilih'] = $query->count();
         return Inertia::render('Dashboard/Index', $data);
